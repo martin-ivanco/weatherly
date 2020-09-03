@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  ForecastView.swift
 //  Weatherly
 //
 //  Created by Martin Ivančo on 03/09/2020.
@@ -8,14 +8,14 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ForecastView: View {
     var body: some View {
-        Text("Hello, World!")
+        Text("Forecast View")
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct ForecastView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ForecastView()
     }
 }
