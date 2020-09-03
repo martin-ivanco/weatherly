@@ -9,24 +9,30 @@
 import SwiftUI
 
 struct MainView: View {
+    @Environment(\.managedObjectContext) var context
     @ObservedObject var viewModel = WeatherViewModel()
+    @State var showCitySearch = false
     
     var body: some View {
         NavigationView {
             VStack {
-                WeatherView(weather: viewModel.weather)
-                ForecastView()
+                WeatherStatusView(status: viewModel.weather.status)
+                WeatherForecastView(forecasts: viewModel.weather.forecasts.count > 2 ? Array(viewModel.weather.forecasts[1...]) : [])
                 Spacer()
             }
-        .navigationBarTitle("Bratislava")
-        .navigationBarItems(
-            leading: Button(action: {}) {
-                Image(systemName: "location")
-            },
-            trailing: Button(action: {}) {
-                Image(systemName: "magnifyingglass")
+            .navigationBarTitle(viewModel.city.name)
+            .navigationBarItems(
+                leading: Button(action: {}) {
+                    Image(systemName: "location")
+                },
+                trailing: Button(action: { self.showCitySearch = true }) {
+                    Image(systemName: "magnifyingglass")
+                }
+            )
+            .sheet(isPresented: self.$showCitySearch) {
+                CitySearchView(isPresented: self.$showCitySearch, city: self.$viewModel.city)
+                .environment(\.managedObjectContext, self.context)
             }
-        )
         }
     }
 }

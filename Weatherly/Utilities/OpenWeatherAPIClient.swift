@@ -21,23 +21,27 @@ class OpenWeatherAPIClient {
         self.key = key
     }
     
-    private func buildUrl(api: RequestAPI, id: Int) -> URL {
-        return URL(string: "https://api.openweathermap.org/data/2.5/\(api.rawValue)?id=\(id)&appid=\(key)&units=metric")!
+    private func buildUrl(coordinates: Coordinates) -> URL {
+        return URL(string: "https://api.openweathermap.org/data/2.5/onecall?lat=\(coordinates.latitude)&lon=\(coordinates.longitude)&exclude=minutely,hourly&appid=\(key)&units=metric")!
     }
     
-    private func fetchRequest<T: Codable>(_ api: RequestAPI, id: Int, completionHandler completion: @escaping (T?) -> Void) {
-        let url = buildUrl(api: api, id: id)
+    func weather(for city: City, completionHandler completion: @escaping (Weather?) -> Void) {
+        if city.coordinates == nil {
+            completion(nil)
+            return
+        }
+        let url = buildUrl(coordinates: city.coordinates!)
         
         let task = session.dataTask(with: url) { data, response, error in
             DispatchQueue.main.async {
-                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode), error == nil, data != nil else {
+                guard error == nil, data != nil else {
                     print("Failed to fetch weather!")
                     completion(nil)
                     return
                 }
                 
                 do {
-                    let weather = try self.decoder.decode(T.self, from: data!)
+                    let weather = try self.decoder.decode(Weather.self, from: data!)
                     completion(weather)
                 } catch {
                     print("Failed to decode weather!")
@@ -49,7 +53,4 @@ class OpenWeatherAPIClient {
         task.resume()
     }
     
-    func weather(for city: Int, completionHandler completion: @escaping (Weather?) -> Void) {
-        fetchRequest(.weather, id: city, completionHandler: completion)
-    }
 }

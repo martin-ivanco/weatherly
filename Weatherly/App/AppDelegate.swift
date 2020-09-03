@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import DataCompression
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Check if db has been initialized
+        let userDefaults = UserDefaults.standard
+        if userDefaults.bool(forKey: "db.init.done") {
+            return true
+        }
+        
+        // If not, download the cities json
+        let session = URLSession(configuration: .default)
+        let url = URL(string: "https://bulk.openweathermap.org/sample/city.list.json.gz")!
+        let task = session.dataTask(with: url) { (data, response, error) in
+            DispatchQueue.main.async {
+                
+                // Check if everything went ok
+                guard error == nil, data != nil else {
+                    print("Failed to fetch cities json!")
+                    return
+                }
+
+                do {
+                    // Decompress the json
+                    let json = data!.gunzip()
+                    let decoder = JSONDecoder()
+                    // Pass managed object context to decoder
+                    decoder.userInfo[CodingUserInfoKey.managedObjectContext!] = self.persistentContainer.viewContext
+                    // Decode json and create cities in Core Data
+                    _ = try decoder.decode([City].self, from: json!)
+                    // Save everything
+                    try self.persistentContainer.viewContext.save()
+                } catch {
+                    print("Failed to decode cities json!")
+                }
+            }
+        }
+        task.resume()
+        
+        // Finally, mark that initialization has been done
+        userDefaults.set(true, forKey: "db.init.done")
         return true
     }
 

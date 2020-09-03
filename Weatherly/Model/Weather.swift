@@ -9,37 +9,54 @@
 import Foundation
 
 struct Weather: Codable {
-    let coordinates: Coordinates
-    let conditions: [WeatherCondition]
-    let parameters: WeatherParameters
-    let wind: Wind
-    let cloudiness: Cloudiness
+    let latitude, longitude: Double
+    let status: WeatherStatus
+    let forecasts: [WeatherForecast]
     
     enum CodingKeys: String, CodingKey {
-        case coordinates = "coord"
-        case conditions = "weather"
-        case parameters = "main"
-        case wind
-        case cloudiness = "clouds"
+        case latitude = "lat"
+        case longitude = "lon"
+        case status = "current"
+        case forecasts = "daily"
     }
     
     static let empty = Weather(
-        coordinates: Coordinates.empty,
-        conditions: [],
-        parameters: WeatherParameters.empty,
-        wind: Wind.empty,
-        cloudiness: Cloudiness.empty
+        latitude: 0,
+        longitude: 0,
+        status: WeatherStatus.empty,
+        forecasts: []
     )
     
-    var systemIconName: String {
-        return "cloud"
-    }
-    
-    var conditionsDescription: String {
-        return conditions.first?.general ?? "Unknown"
-    }
-    
-    var temperature: String {
-        return "\(Int(round(parameters.temperature))) °C"
+    static func systemIconName(id: Int?) -> String {
+        if let id = id {
+            if id >= 200 && id < 300 {
+                return "cloud.bolt.rain"
+            }
+            if id >= 300 && id < 400 {
+                return "cloud.drizzle"
+            }
+            if id >= 500 && id < 600 {
+                return "cloud.rain"
+            }
+            if id >= 600 && id < 700 {
+                return "cloud.snow"
+            }
+            if id >= 700 && id < 800 {
+                return "cloud.fog"
+            }
+            if id == 800 {
+                return "sun.max"
+            }
+            if id == 801 {
+                return "sun.min"
+            }
+            if id == 802 {
+                return "cloud.sun"
+            }
+            if id == 803 || id == 804 {
+                return "cloud"
+            }
+        }
+        return "questionmark.circle.fill"
     }
 }

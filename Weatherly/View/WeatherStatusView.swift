@@ -1,5 +1,5 @@
 //
-//  WeatherView.swift
+//  WeatherStatusView.swift
 //  Weatherly
 //
 //  Created by Martin Ivančo on 03/09/2020.
@@ -8,27 +8,28 @@
 
 import SwiftUI
 
-struct WeatherView: View {
-    let weather: Weather
+struct WeatherStatusView: View {
+    let status: WeatherStatus
     
     var body: some View {
         GeometryReader(content: {geometry in
             VStack {
-                Image(systemName: self.weather.systemIconName)
+                Image(systemName: self.status.systemIconName)
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 0.6 * geometry.size.width)
-                Text(self.weather.conditionsDescription)
+                Text(self.status.conditionsDescription)
                     .font(.subheadline)
-                Text(self.weather.temperature)
+                Text(self.status.temperatureString)
                     .font(.largeTitle)
             }
+            .frame(height: geometry.size.height)
         })
     }
 }
 
 struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherView(weather: Weather.empty)
+        WeatherStatusView(status: WeatherStatus.empty)
     }
 }

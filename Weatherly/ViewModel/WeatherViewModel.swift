@@ -7,9 +7,19 @@
 //
 
 import Foundation
+import CoreData
 
 class WeatherViewModel: ObservableObject {
-    let api = OpenWeatherAPIClient(key: "API_KEY")
+    let api = OpenWeatherAPIClient(key: "f2aad3105ea044b20fb32f04affee342")
+    
+    var city = City.empty {
+        willSet {
+            objectWillChange.send()
+        }
+        didSet {
+            fetchWeather()
+        }
+    }
     
     var weather = Weather.empty {
         willSet {
@@ -22,7 +32,7 @@ class WeatherViewModel: ObservableObject {
     }
     
     private func fetchWeather() {
-        api.weather(for: 3060972) { weather in
+        api.weather(for: city) { weather in
             if let weather = weather {
                 self.weather = weather
             }
