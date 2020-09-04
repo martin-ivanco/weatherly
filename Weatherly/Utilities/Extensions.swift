@@ -22,7 +22,7 @@ extension Decoder {
 extension CityInfo {
     static func withId(_ id: Int, context: NSManagedObjectContext) -> CityInfo {
         // look up id in Core Data
-        let request = fetchRequest(NSPredicate(format: "id_ = %@", id))
+        let request = fetchRequest(NSPredicate(format: "id_ = %@", "\(id)"))
         let cities = (try? context.fetch(request)) ?? []
         if let city = cities.first {
             // if found, return corresponding city
@@ -36,13 +36,26 @@ extension CityInfo {
     }
     
     static func withName(_ name: String, context: NSManagedObjectContext) -> [CityInfo] {
-        // if name is empty, return empty array
+        // if name is empty, return history
         if name == "" {
-            return []
+            return searchHistory(context: context)
         }
         // look up name in Core Data
         let request = fetchRequest(NSPredicate(format: "name_ CONTAINS[cd] %@", name))
         return (try? context.fetch(request)) ?? []
+    }
+    
+    static func searchHistory(context: NSManagedObjectContext) -> [CityInfo] {
+        let userDefaults = UserDefaults.standard
+        var cities: [CityInfo] = []
+        if let ids = userDefaults.array(forKey: "search.history.ids") {
+            for item in ids {
+                if let id = item as? Int {
+                    cities.append(withId(id , context: context))
+                }
+            }
+        }
+        return cities
     }
     
     private static func fetchRequest(_ predicate: NSPredicate) -> NSFetchRequest<CityInfo> {

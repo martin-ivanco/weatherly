@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B316360250142A300A95C2A /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 5B31635F250142A300A95C2A /* DataCompression */; };
 		5B316362250143F600A95C2A /* CitySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B316361250143F600A95C2A /* CitySearchView.swift */; };
+		5B7219A925020F0400044FDB /* AdaptiveStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7219A825020F0400044FDB /* AdaptiveStack.swift */; };
 		5B99BD562500C3CE00D2FB4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99BD552500C3CE00D2FB4C /* AppDelegate.swift */; };
 		5B99BD582500C3CE00D2FB4C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99BD572500C3CE00D2FB4C /* SceneDelegate.swift */; };
 		5B99BD5B2500C3CE00D2FB4C /* Weatherly.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B99BD592500C3CE00D2FB4C /* Weatherly.xcdatamodeld */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		5B316361250143F600A95C2A /* CitySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitySearchView.swift; sourceTree = "<group>"; };
+		5B7219A825020F0400044FDB /* AdaptiveStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveStack.swift; sourceTree = "<group>"; };
 		5B99BD522500C3CE00D2FB4C /* Weatherly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weatherly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B99BD552500C3CE00D2FB4C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5B99BD572500C3CE00D2FB4C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				5B99BD732500CAC200D2FB4C /* WeatherStatusView.swift */,
 				5B99BD752500CADD00D2FB4C /* WeatherForecastView.swift */,
 				5B316361250143F600A95C2A /* CitySearchView.swift */,
+				5B7219A825020F0400044FDB /* AdaptiveStack.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 				5B99BD562500C3CE00D2FB4C /* AppDelegate.swift in Sources */,
 				5B99BD5B2500C3CE00D2FB4C /* Weatherly.xcdatamodeld in Sources */,
 				5B99BD7C2500E4A700D2FB4C /* WeatherCondition.swift in Sources */,
+				5B7219A925020F0400044FDB /* AdaptiveStack.swift in Sources */,
 				5B99BD90250135BA00D2FB4C /* WeatherForecast.swift in Sources */,
 				5B99BD742500CAC200D2FB4C /* WeatherStatusView.swift in Sources */,
 				5B99BD762500CADD00D2FB4C /* WeatherForecastView.swift in Sources */,

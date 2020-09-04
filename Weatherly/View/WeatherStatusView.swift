@@ -17,7 +17,10 @@ struct WeatherStatusView: View {
                 Image(systemName: self.status.systemIconName)
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 0.6 * geometry.size.width)
+                    .frame(
+                        width: 0.5 * geometry.size.width,
+                        height: 0.5 * geometry.size.width
+                    )
                 Text(self.status.conditionsDescription)
                     .font(.subheadline)
                 Text(self.status.temperatureString)

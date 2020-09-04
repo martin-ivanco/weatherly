@@ -21,7 +21,16 @@ struct CitySearchView: View {
             List(CityInfo.withName(searchValue.debounced, context: context), id: \.self) { info in
                 Button(info.name) {
                     self.city = City(info: info)
-                    self.isPresented = false
+                    let userDefaults = UserDefaults.standard
+                    var ids = [info.id]
+                    if let old = userDefaults.array(forKey: "search.history.ids") {
+                        ids.append(contentsOf: old as! [Int])
+                        if ids.count > 10 {
+                            ids.remove(at: ids.count - 1)
+                        }
+                    }
+                    userDefaults.set(ids, forKey: "search.history.ids")
+                    self.isPresented.toggle()
                 }
             }.id(searchValue.id)
         }

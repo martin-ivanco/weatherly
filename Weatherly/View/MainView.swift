@@ -15,17 +15,16 @@ struct MainView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                WeatherStatusView(status: viewModel.weather.status)
-                WeatherForecastView(forecasts: viewModel.weather.forecasts.count > 2 ? Array(viewModel.weather.forecasts[1...]) : [])
-                Spacer()
+            AdaptiveStack {
+                WeatherStatusView(status: self.viewModel.weather.status)
+                WeatherForecastView(forecasts: self.viewModel.weather.forecasts.count > 2 ? Array(self.viewModel.weather.forecasts[1...]) : [])
             }
             .navigationBarTitle(viewModel.city.name)
             .navigationBarItems(
                 leading: Button(action: {}) {
                     Image(systemName: "location")
                 },
-                trailing: Button(action: { self.showCitySearch = true }) {
+                trailing: Button(action: { self.showCitySearch.toggle() }) {
                     Image(systemName: "magnifyingglass")
                 }
             )

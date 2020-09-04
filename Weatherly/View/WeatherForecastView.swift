@@ -17,18 +17,14 @@ struct WeatherForecastView: View {
     }
     
     var body: some View {
-        GeometryReader(content: {geometry in
-            HStack {
-                Spacer()
-                ForecastCell(forecast: self.forecasts[0])
-                Spacer()
-                ForecastCell(forecast: self.forecasts[1])
-                Spacer()
-                ForecastCell(forecast: self.forecasts[2])
-                Spacer()
-            }
-            .frame(width: geometry.size.width, height: geometry.size.height)
-        })
+        HStack {
+            ForecastCell(forecast: self.forecasts[0])
+                .padding()
+            ForecastCell(forecast: self.forecasts[1])
+                .padding()
+            ForecastCell(forecast: self.forecasts[2])
+                .padding()
+        }
     }
 }
 
@@ -43,7 +39,10 @@ struct ForecastCell: View {
                 Image(systemName: self.forecast.systemIconName)
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 0.5 * geometry.size.width)
+                    .frame(
+                        width: 0.6 * geometry.size.width,
+                        height: 0.6 * geometry.size.width
+                    )
                 Text(self.forecast.maxTemp)
                 Text(self.forecast.minTemp)
             }
