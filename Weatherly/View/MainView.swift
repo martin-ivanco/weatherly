@@ -7,11 +7,19 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct MainView: View {
     @Environment(\.managedObjectContext) var context
     @ObservedObject var viewModel = WeatherViewModel()
     @State var showCitySearch = false
+    
+    func getLocation() {
+        self.viewModel.locationManager.requestLocation()
+        if let location = self.viewModel.locationManager.location {
+            self.viewModel.city = City(info: CityInfo.withCoords(Coordinates(longitude: location.coordinate.longitude, latitude: location.coordinate.latitude), context: self.context))
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -21,7 +29,7 @@ struct MainView: View {
             }
             .navigationBarTitle(viewModel.city.name)
             .navigationBarItems(
-                leading: Button(action: {}) {
+                leading: Button(action: { self.getLocation() }) {
                     Image(systemName: "location")
                 },
                 trailing: Button(action: { self.showCitySearch.toggle() }) {
@@ -32,6 +40,9 @@ struct MainView: View {
                 CitySearchView(isPresented: self.$showCitySearch, city: self.$viewModel.city)
                 .environment(\.managedObjectContext, self.context)
             }
+        }
+        .onAppear() {
+            self.getLocation()
         }
     }
 }

@@ -8,9 +8,11 @@
 
 import Foundation
 import CoreData
+import CoreLocation
 
-class WeatherViewModel: ObservableObject {
-    let api = OpenWeatherAPIClient(key: "f2aad3105ea044b20fb32f04affee342")
+class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+    let api = OpenWeatherAPIClient(key: "API_KEY")
+    var locationManager = CLLocationManager()
     
     var city = City.empty {
         willSet {
@@ -27,8 +29,20 @@ class WeatherViewModel: ObservableObject {
         }
     }
 
+    override
     init() {
+        super.init()
         fetchWeather()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print(locations)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
     }
     
     private func fetchWeather() {

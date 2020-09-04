@@ -45,6 +45,15 @@ extension CityInfo {
         return (try? context.fetch(request)) ?? []
     }
     
+    static func withCoords(_ coords: Coordinates, context: NSManagedObjectContext) -> CityInfo {
+        // create an imaginary city with id = 0
+        let city = CityInfo(context: context)
+        city.id = 0
+        city.name = "Weather"
+        city.coordinates = coords
+        return city
+    }
+    
     static func searchHistory(context: NSManagedObjectContext) -> [CityInfo] {
         let userDefaults = UserDefaults.standard
         var cities: [CityInfo] = []
